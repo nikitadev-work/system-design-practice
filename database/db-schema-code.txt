@@ -1,0 +1,138 @@
+Table users {
+  id uuid [primary key]
+  name varchar
+  description varchar
+  city varchar
+  hobby varchar
+  created_at timestamp
+}
+
+Table posts {
+  id uuid [primary key]
+  description varchar
+  views_counter integer
+  author_id uuid
+  created_at timestamp
+}
+
+Ref: users.id < posts.author_id
+
+Table hashtags {
+  id uuid [primary key]
+  title varchar
+}
+
+Table messages {
+  id uuid [primary key]
+  text varchar
+  date timestamp
+  author_id uuid
+  chat_id uuid
+}
+
+Ref: users.id < messages.author_id
+Ref: chats.id < messages.chat_id
+
+Table chats {
+  id uuid [primary key]
+}
+
+Table comments {
+  id uuid [primary key]
+  text varchar
+  date timestamp
+  author_id uuid
+  post_id uuid
+}
+
+Ref: users.id < comments.author_id
+Ref: posts.id < comments.post_id
+
+Table likes {
+  id uuid [primary key]
+  date timestamp
+  author_id uuid
+  post_id uuid
+
+  indexes {
+    (post_id, author_id) [unique]
+  }
+}
+
+Ref: posts.id < likes.post_id
+Ref: users.id < likes.author_id
+
+Table medias {
+  id uuid [primary key]
+  name varchar
+  url varchar
+  author_id uuid
+}
+
+Ref: users.id < medias.author_id
+
+Table user_follows {
+  following_user_id uuid
+  followed_user_id uuid
+  created_at timestamp
+
+  indexes {
+    (following_user_id, followed_user_id) [pk]
+  }
+}
+
+Ref: users.id < user_follows.following_user_id
+Ref: users.id < user_follows.followed_user_id
+
+Table post_hashtags {
+  hashtag_id uuid
+  post_id uuid
+  created_at timestamp
+
+  indexes {
+    (hashtag_id, post_id) [pk]
+  }
+}
+
+Ref: hashtags.id < post_hashtags.hashtag_id
+Ref: posts.id < post_hashtags.post_id
+
+Table chat_memberships {
+  user_id uuid
+  chat_id uuid
+  created_at timestamp
+
+  indexes {
+    (user_id, chat_id) [pk]
+  }
+}
+
+Ref: chats.id < chat_memberships.chat_id
+Ref: users.id < chat_memberships.user_id
+
+Table post_medias {
+  media_id uuid
+  post_id uuid
+  created_at timestamp
+
+  indexes {
+    (media_id, post_id) [pk]
+  }
+}
+
+Ref: medias.id < post_medias.media_id
+Ref: posts.id < post_medias.post_id
+
+Table user_reads {
+  user_id uuid
+  message_id uuid
+  created_at timestamp
+
+  indexes {
+    (user_id, message_id) [pk]
+  }
+}
+
+Ref: users.id < user_reads.user_id
+Ref: messages.id < user_reads.message_id
+
