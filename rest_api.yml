@@ -81,7 +81,7 @@ paths:
         "404":
           description: User not found
 
-  /users/{userId}/post:
+  /users/{userId}/posts:
     post:
       summary: Create Post
       parameters:
@@ -274,18 +274,22 @@ components:
 
     Message:
       type: object
-      required: 
-        - text
-        - authorId
+      required: [id, chatId, authorId, text, sentAt]
       properties:
+        id:
+          type: string
+          format: uuid
+        chatId:
+          type: string
+          format: uuid
+        authorId:
+          type: string
+          format: uuid
         text:
           type: string
         sentAt:
           type: string
           format: date-time
-        authorId:
-          type: string
-          format: uuid
 
     SendMessageRequest:
       type: object
