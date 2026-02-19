@@ -1,3 +1,16 @@
+// The initial version
+
+// Replication: 
+//  - master-slave(async, but read from master for the next 1-2 minutes after insertion)
+
+// Sharding:
+// - hash-based
+// - 4 domains: 
+// - Users domain: by user_id(users)
+// - Posts domain: by post_id(comments, likes, posts, medias), 
+// - Chats/messages domain: by chat_id(messages, chats, chat_membership),
+// - Followers domain: by followed_user_id(user_follows)
+
 Table users {
   id uuid [primary key]
   name varchar
